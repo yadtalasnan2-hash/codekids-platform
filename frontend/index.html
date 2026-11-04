@@ -10,6 +10,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;600;700;800&display=swap" rel="stylesheet">
   
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- مكتبة توليد الـ QR Code مباشرة في المتصفح -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
   <script>
     tailwind.config = {
       theme: {
@@ -44,7 +47,7 @@
       <div class="flex items-center gap-3">
         <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-600 border border-emerald-200">
           <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-          الخادم متصل
+          قاعدة البيانات متصلة سحابياً 🌐
         </span>
       </div>
     </div>
@@ -55,7 +58,7 @@
     
     <div class="grid md:grid-cols-2 gap-6">
       
-      <!-- نموذج تسجيل الطفل وتوليد الـ QR -->
+      <!-- نموذج تسجيل الطفل -->
       <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
         <h3 class="font-bold text-lg text-slate-900 flex items-center gap-2">
           <span>📝</span>
@@ -63,8 +66,8 @@
         </h3>
         <form id="register-form" class="space-y-3 text-sm">
           <div>
-            <label class="block font-semibold text-slate-600 mb-1">اسم الطفل</label>
-            <input type="text" id="reg-name" required placeholder="مثال: يوسف أحمد" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-sky">
+            <label class="block font-semibold text-slate-600 mb-1">اسم الطفل رباعي</label>
+            <input type="text" id="reg-name" required placeholder="مثال: يوسف أحمد الصبري" class="w-full px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-sky">
           </div>
           <div class="grid grid-cols-2 gap-3">
             <div>
@@ -81,31 +84,31 @@
             </div>
           </div>
           <div>
-            <label class="block font-semibold text-slate-600 mb-1">اسم ولي الأمر ورقم الهاتف</label>
+            <label class="block font-semibold text-slate-600 mb-1">بيانات ولي الأمر</label>
             <div class="grid grid-cols-2 gap-2">
-              <input type="text" id="reg-guardian" placeholder="الاسم" class="px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-sky">
+              <input type="text" id="reg-guardian" placeholder="اسم ولي الأمر" class="px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-sky">
               <input type="text" id="reg-phone" placeholder="رقم الهاتف" class="px-3 py-2 rounded-xl border border-slate-200 focus:outline-none focus:border-brand-sky">
             </div>
           </div>
-          <button type="submit" class="w-full py-2.5 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-all">
+          <button type="submit" id="btn-save-child" class="w-full py-2.5 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-all">
             حفظ وإصدار رمز الـ QR 🖨️
           </button>
         </form>
 
         <div id="qr-result-box" class="hidden p-4 bg-sky-50 border border-sky-100 rounded-2xl text-center space-y-2">
           <p class="text-xs font-bold text-sky-800">تم تسجيل الطفل وتوليد الرمز المشفر بنجاح!</p>
-          <img id="qr-image" class="w-28 h-28 mx-auto rounded-lg shadow-sm" src="" alt="QR Code">
+          <div id="qrcode-container" class="flex justify-center p-2 bg-white w-32 h-32 mx-auto rounded-xl shadow-sm border border-sky-100"></div>
           <p id="qr-token-label" class="text-xs font-mono font-bold text-slate-600"></p>
         </div>
       </div>
 
-      <!-- بطاقة بدء الفحص التفاعلي -->
+      <!-- بطاقة الفحص التفاعلي -->
       <div class="bg-gradient-to-br from-brand-sky to-brand-indigo rounded-3xl p-7 text-white shadow-xl shadow-sky-500/10 flex flex-col justify-between">
         <div class="space-y-3">
           <span class="px-3 py-1 rounded-lg bg-white/20 text-xs font-bold">جلسة الفحص الحركي والإدراكي</span>
           <h2 class="text-2xl font-bold">اختبار التآزر البصري وسرعة البديهة</h2>
           <p class="text-white/80 text-sm leading-relaxed">
-            اختبار لقياس سرعة الاستجابة (Reaction Time) بالمللي ثانية ودقة التقاط الأهداف المتحركة بدون أي ضغط نفسي.
+            اختبار تفاعلي لقياس زمن الاستجابة (Reaction Time) بالمللي ثانية ودقة التقاط الأهداف المتحركة بدون أي ضغط نفسي على الطفل.
           </p>
         </div>
         <div class="pt-6">
@@ -144,11 +147,10 @@
       </button>
     </div>
 
-    <!-- جدول نتائج الفحص للأخصائي -->
+    <!-- جدول السجلات السحابية -->
     <div class="bg-white rounded-3xl p-6 border border-slate-200 shadow-sm space-y-4">
       <div class="flex items-center justify-between border-b border-slate-100 pb-4">
-        <h3 class="font-bold text-lg text-slate-900">سجل التقييمات السحابية المعتمدة</h3>
-        <button onclick="loadResults()" class="px-3 py-1.5 rounded-xl bg-slate-100 text-slate-700 text-xs font-bold hover:bg-slate-200">تحديث 🔄</button>
+        <h3 class="font-bold text-lg text-slate-900">سجل التقييمات السحابية المعتمدة (مباشر من Firebase)</h3>
       </div>
       <div class="overflow-x-auto">
         <table class="w-full text-right text-sm">
@@ -163,7 +165,7 @@
             </tr>
           </thead>
           <tbody id="results-table" class="divide-y divide-slate-100 text-slate-700">
-            <tr><td colspan="6" class="text-center py-6 text-slate-400 text-xs">جاري تحميل البيانات من الخادم...</td></tr>
+            <tr><td colspan="6" class="text-center py-6 text-slate-400 text-xs">جاري جلب البيانات من السحابة...</td></tr>
           </tbody>
         </table>
       </div>
@@ -171,6 +173,7 @@
 
   </main>
 
-  <script src="app.js"></script>
+  <!-- كود التفاعل والربط السحابي المباشر -->
+  <script type="module" src="app.js"></script>
 </body>
 </html>
