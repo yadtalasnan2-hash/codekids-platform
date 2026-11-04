@@ -1,4 +1,5 @@
-const API_URL = 'http://localhost:5000/api';
+const API_URL = '/api';
+
 
 // 1. تسجيل الطفل وحفظه
 document.getElementById('register-form').addEventListener('submit', async (e) => {
